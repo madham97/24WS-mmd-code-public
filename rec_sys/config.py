@@ -32,7 +32,7 @@ class ConfigLf:
     rng_seed: int = 42
     num_factors = 10
 
-    num_epochs: int = 10
+    num_epochs: int = 5
 
     fixed_learning_rate = None  # If None, use dynamic learning rate
     dyn_lr_initial: float = 1.0
@@ -45,3 +45,5 @@ class ConfigLf:
     batch_size_predict_with_mse: int = 256
     num_records_predict_and_compare: int = 5
     num_predictions_to_show: int = 5
+
+    grid_search = True
