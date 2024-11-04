@@ -181,17 +181,13 @@ def uv_factorization_vec_reg(mat_u, mat_v, train_ds, config, learning_rate=None,
         Optimized user and item matrices with L2 regularization.
     """
 
-    # Define the update step using the regularized loss function
     @jax.jit
     def update_step(mat_u, mat_v, record, learning_rate, reg_param):
-        # Compute gradients for mat_u and mat_v
         loss_value, grad = jax.value_and_grad(regularized_loss, argnums=[0, 1])(mat_u, mat_v, record, reg_param)
-        # Update matrices using SGD
         mat_u = mat_u - learning_rate * grad[0]
         mat_v = mat_v - learning_rate * grad[1]
         return mat_u, mat_v, loss_value
 
-    # Perform training over epochs
     for epoch in range(config.num_epochs):
         if config.grid_search == True:
             lr = learning_rate if learning_rate is not None else (config.fixed_learning_rate if config.fixed_learning_rate is not None \
@@ -207,7 +203,6 @@ def uv_factorization_vec_reg(mat_u, mat_v, train_ds, config, learning_rate=None,
             mat_u, mat_v, loss = update_step(mat_u, mat_v, record, lr, reg_param)
             train_loss.append(loss)
         
-        # Compute the average training loss for the epoch
         train_loss_mean = jnp.mean(jnp.array(train_loss))
         print(f"Epoch {epoch} finished, avg training loss: {train_loss_mean:.6f}")
 
